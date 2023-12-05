@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Promotion</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="promotion__conteiner">
+      <div class="promotion__box">
+        <h1 class="promotion__h1">До конца акции осталось:</h1>
+        <div class="timer">
+          <p class="timer__text">
+            <span class="days"></span> <span class="days-text"></span>,
+            <span class="hours"></span> <span class="hours-text"></span>,
+            <span class="minutes"></span> <span class="minutes-text"></span>,
+            <span class="seconds"></span> <span class="seconds-text"></span>
+          </p>
+        </div>
+      </div>
+    </div>
+    <script>
+      function time() {
+        let current_date = new Date();
+        let diif_date =
+          new Date(Number(current_date.getFullYear()) + 1, 0, 1) - current_date;
+        console.log(diif_date);
+        function timeText(num, arr_text) {
+          if (num.toString().at(-1) == 1) return arr_text[0];
+          else if (num.toString().at(-1) > 1 && num.toString().at(-1) < 5)
+            return arr_text[1];
+          else return arr_text[2];
+        }
+        let arr_days = ["день", "дня", "дней"];
+        let arr_hours = ["час", "часа", "часов"];
+        let arr_minutes = ["минута", "минуты", "минут"];
+        let arr_seconds = ["секунда", "секунды", "секунд"];
+        let tag_days = document.querySelector(".days");
+        let tag_hours = document.querySelector(".hours");
+        let tag_minutes = document.querySelector(".minutes");
+        let tag_seconds = document.querySelector(".seconds");
+        let msec_time = [86400000, 3600000, 60000, 1000];
+        let time_left = 0;
+        let msec_info = [];
+        for (elem of msec_time) {
+          let time = Math.floor((Number(diif_date) - time_left) / elem);
+          time_left = time * elem + time_left;
+          if (time > 0) msec_info.push(time);
+          else msec_info.push(0);
+        }
+        let days = msec_info[0];
+        let hours = msec_info[1];
+        let minutes = msec_info[2];
+        let seconds = msec_info[3];
+        tag_days.innerHTML = days;
+        tag_hours.innerHTML = hours;
+        tag_minutes.innerHTML = minutes;
+        tag_seconds.innerHTML = seconds;
+        document.querySelector(".days-text").innerHTML = timeText(
+          days,
+          arr_days
+        );
+        document.querySelector(".hours-text").innerHTML = timeText(
+          hours,
+          arr_hours
+        );
+        document.querySelector(".minutes-text").innerHTML = timeText(
+          minutes,
+          arr_minutes
+        );
+        document.querySelector(".seconds-text").innerHTML = timeText(
+          seconds,
+          arr_seconds
+        );
+      }
+      setInterval("time()", 1000);
+    </script>
+  </body>
+</html>
